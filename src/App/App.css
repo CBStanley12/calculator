@@ -45,34 +45,7 @@ button {
 	place-items: center;
 }
 
-.layout-calculator {
-	background-color: var(--color-bg--primary);
-	height: 900px;
-	width: 730px;
-	padding: 4rem 2rem;
-	border-radius: 0.7rem;
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: 3fr repeat(5, 1fr);
-	grid-gap: 1.4rem 0.8rem;
-}
-
-@media only screen and (max-width: 1024px) {
-	.layout-calculator {
-		background-color: var(--color-bg--primary);
-		height: 100vh;
-		width: 100vw;
-		border-radius: 0;
-	}
-}
-
-@media only screen and (max-width: 375px) {
-	.layout-calculator {
-		padding: 2rem 1rem;
-		grid-gap: 0.8rem 0.4rem;
-	}
-}
-
+@import "../Components/Calculator/Calculator.css";
 @import "../Components/Button/Button.css";
 @import "../Components/Display/Display.css";
   
