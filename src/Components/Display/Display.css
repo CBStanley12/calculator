@@ -2,5 +2,26 @@
     grid-area: 1 / 1 / 2 / 5;
     background-color: var(--color-bg--tertiary);
     height: 100%;
-    border-radius: 0.7rem;
+	border-radius: 0.7rem;
+	
+	display: grid;
+	grid-template: 1fr 2fr / 1fr;
+	place-items: center end;
+}
+
+.display_equation, .display_value {
+	margin: 0;
+	padding: 0 1rem;
+}
+
+.display_equation {
+	color: var(--color-text--tertiary);
+	font-size: 1.3rem;
+	font-weight: 700;
+}
+
+.display_value {
+	color: var(--color-text--secondary);
+	font-size: 6rem;
+	font-weight: 400;
 }

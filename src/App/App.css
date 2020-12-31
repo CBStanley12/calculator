@@ -3,7 +3,9 @@
 :root {
 	--font-primary: 'Orbitron', 'Roboto', sans-serif;
 
-	--color-text: #fff;
+	--color-text--primary: #fff;
+	--color-text--secondary: #667273;
+	--color-text--tertiary: #7f8c8d;
 	--color-bg--primary: #3498db;
 	--color-bg--secondary: #2980b9;
 	--color-bg--tertiary: #ecf0f1;
@@ -35,7 +37,7 @@ button {
 	  cursor: pointer;
 	  font-family: inherit;
 	  font-weight: 700;
-	  outline-color: var(--color-text);
+	  outline-color: var(--color-text--primary);
 }
 
 .layout-container {
