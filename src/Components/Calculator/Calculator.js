@@ -15,6 +15,8 @@ class Calculator extends Component {
 		this.handleNumberInput = this.handleNumberInput.bind(this);
 		this.handleDecimalInput = this.handleDecimalInput.bind(this);
 		this.handleOperatorInput = this.handleOperatorInput.bind(this);
+		this.clear = this.clear.bind(this);
+		this.clearAll = this.clearAll.bind(this);
 	}
 
 	handleNumberInput(e) {
@@ -44,14 +46,30 @@ class Calculator extends Component {
 		equation.push(e.target.value);
 
 		this.setState({ currentEquation: equation });
+		this.clear();
+	}
+
+	clear() {
+		this.setState({ currentValue: '0' });
+	}
+
+	clearAll() {
+		this.setState({
+			currentValue: '0',
+			currentEquation: []
+		});
 	}
 
 	render() {
+		let value = this.state.currentValue;
+		const btnClearAll = <Button id="clear" value="AC" cls="modifier" click={this.clearAll} />,
+			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
+
 		return (
 			<div className="layout-calculator">
 				<Display equation={this.state.currentEquation.join(' ')} value={this.state.currentValue} />
 
-				<Button id="clear" value="AC" cls="modifier" />
+				{(value !== '0') ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
