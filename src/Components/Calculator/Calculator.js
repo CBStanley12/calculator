@@ -13,16 +13,26 @@ class Calculator extends Component {
 		}
 
 		this.handleNumberInput = this.handleNumberInput.bind(this);
+		this.handleDecimalInput = this.handleDecimalInput.bind(this);
 		this.handleOperatorInput = this.handleOperatorInput.bind(this);
 	}
 
 	handleNumberInput(e) {
-		let value = this.state.currentValue,
-			newValue = e.target.value;
+		let value = this.state.currentValue;
 
-		if (!isNaN(newValue) || (newValue === '.' && !value.includes('.'))) {
-			value += newValue;
+		if (value === '0') {
+			value = e.target.value;
+		} else {
+			value += e.target.value;
 		}
+
+		this.setState({ currentValue: value });
+	}
+
+	handleDecimalInput(e) {
+		let value = this.state.currentValue;
+
+		if (!value.includes('.')) { value += e.target.value }
 
 		this.setState({ currentValue: value });
 	}
@@ -62,7 +72,7 @@ class Calculator extends Component {
 				<Button id="add" value="+" cls="operator" click={this.handleOperatorInput} />
 
 				<Button id="zero" value="0" cls="number" click={this.handleNumberInput} />
-				<Button id="decimal" value="." cls="number" click={this.handleNumberInput} />
+				<Button id="decimal" value="." cls="number" click={this.handleDecimalInput} />
 				<Button id="equal" value="=" cls="operator" />
 			</div>
 		);
