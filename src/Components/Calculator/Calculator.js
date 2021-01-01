@@ -15,8 +15,10 @@ class Calculator extends Component {
 		this.handleNumberInput = this.handleNumberInput.bind(this);
 		this.handleDecimalInput = this.handleDecimalInput.bind(this);
 		this.handleOperatorInput = this.handleOperatorInput.bind(this);
+		this.handleCalculation = this.handleCalulation.bind(this);
 		this.clear = this.clear.bind(this);
 		this.clearAll = this.clearAll.bind(this);
+		this.calculateValue = this.calculateValue.bind(this);
 	}
 
 	handleNumberInput(e) {
@@ -41,12 +43,21 @@ class Calculator extends Component {
 
 	handleOperatorInput(e) {
 		let equation = this.state.currentEquation;
-
-		equation.push(this.state.currentValue);
-		equation.push(e.target.value);
+		equation.push(this.state.currentValue, e.target.value);
 
 		this.setState({ currentEquation: equation });
 		this.clear();
+	}
+
+	handleCalulation() {
+		let {currentValue, currentEquation} = this.state;
+		currentEquation.push(currentValue);
+		currentValue = this.calculateValue(currentEquation);
+
+		this.setState({
+			currentValue: currentValue,
+			currentEquation: currentEquation
+		});
 	}
 
 	clear() {
@@ -60,16 +71,31 @@ class Calculator extends Component {
 		});
 	}
 
+	calculateValue([a, oper, b]) {
+		switch(oper) {
+			case '+':
+				return parseInt(a) + parseInt(b);
+			case '−':
+				return parseInt(a) - parseInt(b);
+			case '×':
+				return parseInt(a) * parseInt(b);
+			case '÷':
+				return parseInt(a) / parseInt(b);
+			default:
+				return;
+		}
+	}
+
 	render() {
-		let value = this.state.currentValue;
+		let {currentValue, currentEquation} = this.state;
 		const btnClearAll = <Button id="clear" value="AC" cls="modifier" click={this.clearAll} />,
 			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
 
 		return (
 			<div className="layout-calculator">
-				<Display equation={this.state.currentEquation.join(' ')} value={this.state.currentValue} />
+				<Display equation={currentEquation.join(' ')} value={currentValue} />
 
-				{(value !== '0') ? btnClear : btnClearAll}
+				{(currentValue !== '0') ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
@@ -91,7 +117,7 @@ class Calculator extends Component {
 
 				<Button id="zero" value="0" cls="number" click={this.handleNumberInput} />
 				<Button id="decimal" value="." cls="number" click={this.handleDecimalInput} />
-				<Button id="equal" value="=" cls="operator" />
+				<Button id="equal" value="=" cls="operator" click={this.handleCalculation} />
 			</div>
 		);
 	}
