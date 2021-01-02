@@ -39,11 +39,16 @@ class Calculator extends Component {
 	}
 
 	handleDecimalInput(e) {
-		let value = this.state.currentValue;
+		let currentValue = this.state.currentValue;
 
-		if (!value.includes('.')) { value += e.target.value }
+		if (this.state.currentEquation.length === 3) {
+			this.clearAll();
+			currentValue = '0';
+		}
 
-		this.setState({ currentValue: value });
+		if (!currentValue.includes('.')) { currentValue += e.target.value }
+
+		this.setState({ currentValue: currentValue });
 	}
 
 	handleOperatorInput(e) {
