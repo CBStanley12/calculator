@@ -22,15 +22,20 @@ class Calculator extends Component {
 	}
 
 	handleNumberInput(e) {
-		let value = this.state.currentValue;
+		let currentValue = this.state.currentValue;
 
-		if (value === '0') {
-			value = e.target.value;
-		} else {
-			value += e.target.value;
+		if (this.state.currentEquation.length === 3) {
+			this.clearAll();
+			currentValue = '0';
 		}
 
-		this.setState({ currentValue: value });
+		if (currentValue === '0') {
+			currentValue = e.target.value;
+		} else {
+			currentValue += e.target.value;
+		}
+
+		this.setState({ currentValue: currentValue });
 	}
 
 	handleDecimalInput(e) {
@@ -42,10 +47,15 @@ class Calculator extends Component {
 	}
 
 	handleOperatorInput(e) {
-		let equation = this.state.currentEquation;
-		equation.push(this.state.currentValue, e.target.value);
+		let {currentValue, currentEquation} = this.state;
 
-		this.setState({ currentEquation: equation });
+		if (currentEquation.length === 3) {
+			currentEquation = [currentValue, e.target.value];
+		} else {
+			currentEquation.push(currentValue, e.target.value);
+		}
+
+		this.setState({ currentEquation: currentEquation });
 		this.clear();
 	}
 
