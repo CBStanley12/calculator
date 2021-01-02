@@ -113,7 +113,7 @@ class Calculator extends Component {
 			<div className="layout-calculator">
 				<Display equation={currentEquation.join(' ')} value={currentValue} />
 
-				{(currentValue !== '0') ? btnClear : btnClearAll}
+				{(currentValue !== '0' && currentEquation.length !== 3) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
