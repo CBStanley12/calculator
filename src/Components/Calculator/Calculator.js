@@ -67,7 +67,7 @@ class Calculator extends Component {
 	handleCalulation() {
 		let {currentValue, currentEquation} = this.state;
 		currentEquation.push(currentValue);
-		currentValue = this.calculateValue(currentEquation);
+		currentValue = this.calculateValue(currentEquation).toString();
 
 		this.setState({
 			currentValue: currentValue,
@@ -87,15 +87,18 @@ class Calculator extends Component {
 	}
 
 	calculateValue([a, oper, b]) {
+		a = (a.includes('.')) ? parseFloat(a) : parseInt(a);
+		b = (b.includes('.')) ? parseFloat(b) : parseInt(b);
+
 		switch(oper) {
 			case '+':
-				return parseInt(a) + parseInt(b);
+				return a + b;
 			case '−':
-				return parseInt(a) - parseInt(b);
+				return a - b;
 			case '×':
-				return parseInt(a) * parseInt(b);
+				return a * b;
 			case '÷':
-				return parseInt(a) / parseInt(b);
+				return a / b;
 			default:
 				return;
 		}
