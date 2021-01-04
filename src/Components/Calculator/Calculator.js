@@ -15,6 +15,7 @@ class Calculator extends Component {
 		this.handleNumberInput = this.handleNumberInput.bind(this);
 		this.handleDecimalInput = this.handleDecimalInput.bind(this);
 		this.handleOperatorInput = this.handleOperatorInput.bind(this);
+		this.handleSignInput = this.handleSignInput.bind(this);
 		this.handleCalculation = this.handleCalulation.bind(this);
 		this.clear = this.clear.bind(this);
 		this.clearAll = this.clearAll.bind(this);
@@ -62,6 +63,15 @@ class Calculator extends Component {
 
 		this.setState({ currentEquation: currentEquation });
 		this.clear();
+	}
+
+	handleSignInput() {
+		let currentValue = this.state.currentValue,
+			value = (currentValue.includes('.')) ? parseFloat(currentValue) : parseInt(currentValue);
+		
+		if (this.state.currentEquation.length === 3) { this.setState({ currentEquation: [] }); }
+		value = (value * -1).toString();
+		this.setState({ currentValue: value });
 	}
 
 	handleCalulation() {
@@ -114,7 +124,7 @@ class Calculator extends Component {
 				<Display equation={currentEquation} value={currentValue} />
 
 				{(currentValue !== '0' && currentEquation.length !== 3) ? btnClear : btnClearAll}
-				<Button id="sign" value="±" cls="modifier" />
+				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
 
