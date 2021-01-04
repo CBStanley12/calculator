@@ -3,9 +3,8 @@
     background-color: var(--color-bg--tertiary);
     height: 100%;
 	border-radius: 0.7rem;
-	
 	display: grid;
-	grid-template: 1fr 2fr / 1fr;
+	grid-template: 30% 70% / 100%;
 	place-items: center end;
 }
 
@@ -16,12 +15,26 @@
 
 .display_equation {
 	color: var(--color-text--tertiary);
-	font-size: 1.3rem;
+	font-size: 1.7rem;
 	font-weight: 700;
 }
 
 .display_value {
 	color: var(--color-text--secondary);
-	font-size: 6rem;
+	font-size: 5rem;
 	font-weight: 400;
+}
+
+@media only screen and (max-width: 600px) {
+	.display_equation, .display_value {
+		padding: 0.3rem;
+	}
+
+	.display_equation {
+		font-size: 5vw;
+	}
+
+	.display_value {
+		font-size: 14vw;
+	}
 }
