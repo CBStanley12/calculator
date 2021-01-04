@@ -47,7 +47,7 @@ class Calculator extends Component {
 			currentValue = '0';
 		}
 
-		if (!currentValue.includes('.')) { currentValue += e.target.value }
+		if (!currentValue.includes('.')) { currentValue += '.'; }
 
 		this.setState({ currentValue: currentValue });
 	}

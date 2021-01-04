@@ -8,7 +8,14 @@ function Display({ equation, value }) {
 }
 
 function formatNumber(num) {
-	let number = (num.includes('.')) ? parseFloat(num) : parseInt(num);
+	let number;
+
+	if (num.includes('.')) {
+		number = (num === '0.') ? num : parseFloat(num);
+	} else {
+		number = parseInt(num);
+	}
+
 	return number.toLocaleString('en');
 }
 
