@@ -111,7 +111,7 @@ class Calculator extends Component {
 
 		return (
 			<div className="layout-calculator">
-				<Display equation={currentEquation.join(' ')} value={currentValue} />
+				<Display equation={currentEquation} value={currentValue} />
 
 				{(currentValue !== '0' && currentEquation.length !== 3) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" />
