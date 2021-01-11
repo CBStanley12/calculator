@@ -79,8 +79,13 @@ class Calculator extends Component {
 	handleCalulation() {
 		let {value, equation} = this.state;
 
-		equation.push(value, '=');
-		value = this.calculateValue(equation).toString();
+		if (equation.length === 2) {
+			equation.push(value, '=');
+			value = this.calculateValue(equation).toString();
+		} else if (equation.includes('=')) {
+			equation[0] = value;
+			value = this.calculateValue(equation).toString();
+		}
 
 		this.setState({
 			value: value,
@@ -126,7 +131,7 @@ class Calculator extends Component {
 			<div className="layout-calculator">
 				<Display equation={equation} value={value} />
 
-				{(value !== '0' && equation.length !== 3) ? btnClear : btnClearAll}
+				{(value !== '0' && !equation.includes('=')) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
