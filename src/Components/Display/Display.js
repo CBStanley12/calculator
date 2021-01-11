@@ -11,7 +11,7 @@ function formatNumber(num) {
 	let number;
 
 	if (num.includes('.')) {
-		number = (num === '0.') ? num : parseFloat(num);
+		number = (num.endsWith('.')) ? num : parseFloat(num);
 	} else {
 		number = parseInt(num);
 	}

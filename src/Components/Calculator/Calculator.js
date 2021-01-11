@@ -116,7 +116,7 @@ class Calculator extends Component {
 
 	render() {
 		let {currentValue, currentEquation} = this.state;
-		const btnClearAll = <Button id="clear" value="AC" cls="modifier" click={this.clearAll} />,
+		const btnClearAll = <Button id="clear-all" value="AC" cls="modifier" click={this.clearAll} />,
 			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
 
 		return (
