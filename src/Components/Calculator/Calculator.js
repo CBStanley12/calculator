@@ -8,8 +8,8 @@ class Calculator extends Component {
 		super(props);
 
 		this.state = {
-			currentValue: '0',
-			currentEquation: [],
+			value: '0',
+			equation: [],
 		}
 
 		this.handleNumberInput = this.handleNumberInput.bind(this);
@@ -23,76 +23,79 @@ class Calculator extends Component {
 	}
 
 	handleNumberInput(e) {
-		let currentValue = this.state.currentValue;
+		let {value, equation} = this.state;
 
-		if (this.state.currentEquation.length === 3) {
+		if (equation.includes('=')) {
 			this.clearAll();
-			currentValue = '0';
+			value = '0';
 		}
 
-		if (currentValue === '0') {
-			currentValue = e.target.value;
+		if (value === '0') {
+			value = e.target.value;
 		} else {
-			currentValue += e.target.value;
+			value += e.target.value;
 		}
 
-		this.setState({ currentValue: currentValue });
+		this.setState({ value: value });
 	}
 
-	handleDecimalInput(e) {
-		let currentValue = this.state.currentValue;
+	handleDecimalInput() {
+		let {value, equation} = this.state;
 
-		if (this.state.currentEquation.length === 3) {
+		if (equation.includes('=')) {
 			this.clearAll();
-			currentValue = '0';
+			value = '0';
 		}
 
-		if (!currentValue.includes('.')) { currentValue += '.'; }
+		if (!value.includes('.')) { value += '.'; }
 
-		this.setState({ currentValue: currentValue });
+		this.setState({ value: value });
 	}
 
 	handleOperatorInput(e) {
-		let {currentValue, currentEquation} = this.state;
+		let {value, equation} = this.state;
 
-		if (currentEquation.length === 3) {
-			currentEquation = [currentValue, e.target.value];
+		if (equation.includes('=')) {
+			equation = [value, e.target.value];
 		} else {
-			currentEquation.push(currentValue, e.target.value);
+			equation.push(value, e.target.value);
 		}
 
-		this.setState({ currentEquation: currentEquation });
+		this.setState({ equation: equation });
 		this.clear();
 	}
 
 	handleSignInput() {
-		let currentValue = this.state.currentValue,
-			value = (currentValue.includes('.')) ? parseFloat(currentValue) : parseInt(currentValue);
+		let {value, equation} = this.state;
 		
-		if (this.state.currentEquation.length === 3) { this.setState({ currentEquation: [] }); }
+		if (equation.includes('=')) { this.clearAll(); }
+
+		value = (value.includes('.')) ? parseFloat(value) : parseInt(value);
 		value = (value * -1).toString();
-		this.setState({ currentValue: value });
+
+		this.setState({ value: value });
 	}
 
 	handleCalulation() {
-		let {currentValue, currentEquation} = this.state;
-		currentEquation.push(currentValue);
-		currentValue = this.calculateValue(currentEquation).toString();
+		let {value, equation} = this.state;
+
+		equation.push(value, '=');
+		value = this.calculateValue(equation).toString();
 
 		this.setState({
-			currentValue: currentValue,
-			currentEquation: currentEquation
+			value: value,
+			equation: equation
 		});
 	}
 
 	clear() {
-		this.setState({ currentValue: '0' });
+		this.setState({ value: '0' });
 	}
 
 	clearAll() {
 		this.setState({
-			currentValue: '0',
-			currentEquation: []
+			value: '0',
+			equation: []
 		});
 	}
 
@@ -115,15 +118,15 @@ class Calculator extends Component {
 	}
 
 	render() {
-		let {currentValue, currentEquation} = this.state;
+		let {value, equation} = this.state;
 		const btnClearAll = <Button id="clear-all" value="AC" cls="modifier" click={this.clearAll} />,
 			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
 
 		return (
 			<div className="layout-calculator">
-				<Display equation={currentEquation} value={currentValue} />
+				<Display equation={equation} value={value} />
 
-				{(currentValue !== '0' && currentEquation.length !== 3) ? btnClear : btnClearAll}
+				{(value !== '0' && equation.length !== 3) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
 				<Button id="percent" value="%" cls="modifier" />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
