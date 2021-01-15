@@ -8,9 +8,14 @@ class Calculator extends Component {
 		super(props);
 
 		this.state = {
-			value: '0',
-			equation: [],
-			displayValue: '0'
+			term: {
+				display: '0',
+				value: 0
+			},
+			equation: {
+				display: [],
+				value: []
+			}
 		}
 
 		this.handleNumberInput = this.handleNumberInput.bind(this);
@@ -23,51 +28,44 @@ class Calculator extends Component {
 		this.clearAll = this.clearAll.bind(this);
 		this.calculateValue = this.calculateValue.bind(this);
 		this.calculatePercent = this.calculatePercent.bind(this);
+		this.convertToNumber = this.convertToNumber.bind(this);
 	}
 
 	handleNumberInput(e) {
-		let {value, equation} = this.state;
+		if (this.state.equation.display.includes('=')) { this.clearAll(); }
+		let term = this.state.term;
 
-		if (equation.includes('=')) {
-			this.clearAll();
-			value = '0';
-		}
-
-		if (value === '0') {
-			value = e.target.value;
+		if (term.display === '0') {
+			term.display = e.target.value;
 		} else {
-			value += e.target.value;
+			term.display += e.target.value;
 		}
 
-		this.setState({
-			value: value,
-			displayValue: value
-		});
+		term.value = this.convertToNumber(term.display);
+		term.display = term.value.toLocaleString('en');
+
+		this.setState({ term: term });
 	}
 
 	handleDecimalInput() {
-		let {value, equation} = this.state;
+		if (this.state.equation.display.includes('=')) { this.clearAll(); }
+		let display = this.state.term.display;
 
-		if (equation.includes('=')) {
-			this.clearAll();
-			value = '0';
-		}
+		if (!display.includes('.')) { display += '.'; }
 
-		if (!value.includes('.')) { value += '.'; }
-
-		this.setState({
-			value: value,
-			displayValue: value
-		});
+		this.setState({ term: { display: display } });
 	}
 
 	handleOperatorInput(e) {
-		let {value, equation} = this.state;
+		let {term, equation} = this.state,
+			operator = e.target.value;
 
-		if (equation.includes('=')) {
-			equation = [value, e.target.value];
+		if (equation.display.includes('=')) {
+			equation.display = [term.display, operator];
+			equation.value = [term.value, operator];
 		} else {
-			equation.push(value, e.target.value);
+			equation.display.push(term.display, operator);
+			equation.value.push(term.value, operator);
 		}
 
 		this.setState({ equation: equation });
@@ -103,45 +101,37 @@ class Calculator extends Component {
 	}
 
 	handleCalulation() {
-		let {value, equation} = this.state;
+		let {term, equation} = this.state;
 
-		if (equation.length === 2) {
-			equation.push(value, '=');
-			value = this.calculateValue(equation).toString();
-		} else if (equation.includes('=')) {
-			equation[0] = value;
-			value = this.calculateValue(equation).toString();
+		if (equation.display.includes('=')) {
+			equation.display = [term.display, '='];
+			equation.value = [term.value];
+		} else {
+			equation.display.push(term.display, '=');
+			equation.value.push(term.value);
+
+			term.value = this.calculateValue(equation.value);
+			term.display = term.value.toLocaleString('en');
 		}
 
 		this.setState({
-			value: value,
-			equation: equation,
-			displayValue: value
+			term: term,
+			equation: equation
 		});
 	}
 
 	clear() {
-		this.setState({
-			value: '0',
-			displayValue: '0'
-		});
+		this.setState({ term: { display: '0', value: 0 } });
 	}
 
 	clearAll() {
 		this.setState({
-			value: '0',
-			equation: [],
-			displayValue: '0'
+			term: { display: '0', value: 0 },
+			equation: { display: [], value: [] }
 		});
 	}
 
 	calculateValue([a, oper, b]) {
-		if (a.includes('%')) { a = this.calculatePercent(a.slice(0, -1)); }	
-		if (b.includes('%')) { b = this.calculatePercent(b.slice(0, -1), a); }
-
-		a = (a.includes('.')) ? parseFloat(a) : parseInt(a);
-		b = (b.includes('.')) ? parseFloat(b) : parseInt(b);
-
 		switch(oper) {
 			case '+':
 				return a + b;
@@ -163,16 +153,21 @@ class Calculator extends Component {
 		return (a * (b / 100)).toString();
 	}
 
+	convertToNumber(term) {
+		let termNum = term.replace(/,/g, '');
+		return (termNum.includes('.')) ? parseFloat(termNum) : parseInt(termNum);
+	}
+
 	render() {
-		let {value, equation, displayValue} = this.state;
+		let {term, equation} = this.state;
 		const btnClearAll = <Button id="clear-all" value="AC" cls="modifier" click={this.clearAll} />,
 			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
 
 		return (
 			<div className="layout-calculator">
-				<Display equation={equation} value={displayValue} />
+				<Display equation={equation.display} value={term.display} />
 
-				{(value !== '0' && !equation.includes('=')) ? btnClear : btnClearAll}
+				{(term.display !== '0' && !equation.display.includes('=')) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
 				<Button id="percent" value="%" cls="modifier" click={this.handlePercentInput} />
 				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
