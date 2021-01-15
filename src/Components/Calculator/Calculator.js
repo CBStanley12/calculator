@@ -27,7 +27,6 @@ class Calculator extends Component {
 		this.clear = this.clear.bind(this);
 		this.clearAll = this.clearAll.bind(this);
 		this.calculateValue = this.calculateValue.bind(this);
-		this.calculatePercent = this.calculatePercent.bind(this);
 		this.convertToNumber = this.convertToNumber.bind(this);
 	}
 
@@ -73,31 +72,27 @@ class Calculator extends Component {
 	}
 
 	handleSignInput() {
-		let {value, equation} = this.state;
-		
-		if (equation.includes('=')) { this.clearAll(); }
+		let term = this.state.term;
+		if (this.state.equation.display.includes('=')) { this.clearAll(); }
 
-		value = (value.includes('.')) ? parseFloat(value) : parseInt(value);
-		value = (value * -1).toString();
+		term.value *= -1;
+		term.display = term.value.toLocaleString('en');
 
-		this.setState({
-			value: value,
-			displayValue: value
-		});
+		this.setState({ term: term });
 	}
 
 	handlePercentInput() {
-		let {value, equation, displayValue} = this.state;
+		let {term, equation} = this.state;
+		if (equation.display.includes('=')) { this.clearAll(); }
 
-		if (equation.includes('=')) { this.clearAll(); }
+		term.display += '%';
+		if (equation.display.length === 2) {
+			term.value = (equation.value[0] * (term.value / 100));
+		} else {
+			term.value = (term.value / 100);
+		}
 
-		displayValue = (equation.length === 2) ? this.calculatePercent(value, equation[0]) : this.calculatePercent(value);
-		value += '%';
-
-		this.setState({
-			value: value,
-			displayValue: displayValue
-		});
+		this.setState({ term: term });
 	}
 
 	handleCalulation() {
@@ -146,13 +141,6 @@ class Calculator extends Component {
 		}
 	}
 
-	calculatePercent(b, a = '1') {
-		a = (a.includes('.')) ? parseFloat(a) : parseInt(a);
-		b = (b.includes('.')) ? parseFloat(b) : parseInt(b);
-
-		return (a * (b / 100)).toString();
-	}
-
 	convertToNumber(term) {
 		let termNum = term.replace(/,/g, '');
 		return (termNum.includes('.')) ? parseFloat(termNum) : parseInt(termNum);
@@ -165,7 +153,7 @@ class Calculator extends Component {
 
 		return (
 			<div className="layout-calculator">
-				<Display equation={equation.display} value={term.display} />
+				<Display equation={equation.display} value={(term.display.includes('%')) ? term.value.toLocaleString('en') : term.display} />
 
 				{(term.display !== '0' && !equation.display.includes('=')) ? btnClear : btnClearAll}
 				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
