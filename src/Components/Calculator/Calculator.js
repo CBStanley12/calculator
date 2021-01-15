@@ -31,8 +31,11 @@ class Calculator extends Component {
 	}
 
 	handleNumberInput(e) {
-		if (this.state.equation.display.includes('=')) { this.clearAll(); }
 		let term = this.state.term;
+		if (this.state.equation.display.includes('=')) {
+			this.clearAll();
+			term = { display: '0', value: 0 };
+		}
 
 		if (term.display === '0') {
 			term.display = e.target.value;
