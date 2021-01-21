@@ -12,21 +12,21 @@
 	border-radius: 0 0.7rem 0.7rem 0;
 }
 
-.history_header {
-	display: flex;
-	justify-content: flex-end;
+.history[data-state="is-hidden"] {
+	display: none;
 }
 
 .history_list {
-	height: 100%;
 	background-color: var(--color-bg--secondary);
 	color: var(--color-text--primary);
 	font-family: 'Roboto', sans-serif;
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: column;
 	border-radius: 0.4rem;
+	padding: 1.4rem 0;
 	overflow-y: auto;
-	padding-bottom: 1.4rem;
+	overscroll-behavior-y: contain;
+  	scroll-snap-type: y proximity;
 }
 
 .history_list.empty {
@@ -41,11 +41,13 @@
 	font-size: 1.2rem;
 }
 
+.list-entry:last-child {
+	backdrop-filter: brightness(110%);
+	scroll-snap-align: end;
+	scroll-margin-bottom: 1.4rem;
+}
+
 .history_footer {
 	display: grid;
 	place-items: center end;
-}
-
-.history[data-state="is-hidden"] {
-	display: none;
 }
