@@ -68,11 +68,18 @@ class Calculator extends Component {
 	handleOperatorInput(e) {
 		let {term, equation} = this.state,
 			operator = e.target.value;
+		
+		if (equation.display.length === 2 && term.display !== '0') {
+			this.handleCalculation();
+		}
 
 		if (equation.display.includes('=')) {
 			equation.display = [term.display, operator];
 			equation.value = [term.value, operator];
-		} else {
+		} else if (equation.display[1] && term.display === '0') {
+			equation.display[1] = operator;
+			equation.value[1] = operator;
+	 	} else {
 			equation.display.push(term.display, operator);
 			equation.value.push(term.value, operator);
 		}
