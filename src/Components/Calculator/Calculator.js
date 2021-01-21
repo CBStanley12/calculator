@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Calculator.css';
 import Button from '../Button/Button';
 import Display from '../Display/Display';
+import History from '../History/History';
 
 class Calculator extends Component {
 	constructor(props) {
@@ -15,6 +16,10 @@ class Calculator extends Component {
 			equation: {
 				display: [],
 				value: []
+			},
+			history: {
+				state: 'hidden',
+				list: []
 			}
 		}
 
@@ -28,6 +33,8 @@ class Calculator extends Component {
 		this.clearAll = this.clearAll.bind(this);
 		this.calculateValue = this.calculateValue.bind(this);
 		this.convertToNumber = this.convertToNumber.bind(this);
+		this.toggleHistory = this.toggleHistory.bind(this);
+		this.clearHistory = this.clearHistory.bind(this);
 	}
 
 	handleNumberInput(e) {
@@ -99,7 +106,7 @@ class Calculator extends Component {
 	}
 
 	handleCalulation() {
-		let {term, equation} = this.state;
+		let {term, equation, history} = this.state;
 
 		if (equation.display.includes('=')) {
 			equation.display = [term.display, '='];
@@ -110,11 +117,14 @@ class Calculator extends Component {
 
 			term.value = this.calculateValue(equation.value);
 			term.display = term.value.toLocaleString('en');
+
+			history.list.push([equation.display.slice(0, -1).join(' '), `= ${term.display}`]);
 		}
 
 		this.setState({
 			term: term,
-			equation: equation
+			equation: equation,
+			history: history
 		});
 	}
 
@@ -149,38 +159,56 @@ class Calculator extends Component {
 		return (termNum.includes('.')) ? parseFloat(termNum) : parseInt(termNum);
 	}
 
+	toggleHistory() {
+		let history = this.state.history;
+		history.state = (history.state === 'hidden') ? 'active' : 'hidden';
+		this.setState({ history: history });
+	}
+
+	clearHistory() {
+		let history = this.state.history;
+		history.list = [];
+		this.setState({ history: history });
+	}
+
 	render() {
-		let {term, equation} = this.state;
+		let {term, equation, history} = this.state;
 		const btnClearAll = <Button id="clear-all" value="AC" cls="modifier" click={this.clearAll} />,
 			btnClear = <Button id="clear" value="C" cls="modifier" click={this.clear} />;
 
 		return (
-			<div className="layout-calculator">
-				<Display equation={equation.display} value={(term.display.includes('%')) ? term.value.toLocaleString('en') : term.display} />
+			<div className="layout-container">
+				<main className="calculator" data-history={`is-${history.state}`}>
+					{(history.state === 'active') ? "" : <Button id="toggle" value="view history" cls="history" click={this.toggleHistory} />}
 
-				{(term.display !== '0' && !equation.display.includes('=')) ? btnClear : btnClearAll}
-				<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
-				<Button id="percent" value="%" cls="modifier" click={this.handlePercentInput} />
-				<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
+					<Display equation={equation.display} value={(term.display.includes('%')) ? term.value.toLocaleString('en') : term.display} />
 
-				<Button id="seven" value="7" cls="number" click={this.handleNumberInput} />
-				<Button id="eight" value="8" cls="number" click={this.handleNumberInput} />
-				<Button id="nine" value="9" cls="number" click={this.handleNumberInput} />
-				<Button id="multiply" value="×" cls="operator" click={this.handleOperatorInput} />
+					{(term.display !== '0' && !equation.display.includes('=')) ? btnClear : btnClearAll}
+					<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />
+					<Button id="percent" value="%" cls="modifier" click={this.handlePercentInput} />
+					<Button id="divide" value="÷" cls="operator" click={this.handleOperatorInput} />
 
-				<Button id="four" value="4" cls="number" click={this.handleNumberInput} />
-				<Button id="five" value="5" cls="number" click={this.handleNumberInput} />
-				<Button id="six" value="6" cls="number" click={this.handleNumberInput} />
-				<Button id="subtract" value="−" cls="operator" click={this.handleOperatorInput} />
+					<Button id="seven" value="7" cls="number" click={this.handleNumberInput} />
+					<Button id="eight" value="8" cls="number" click={this.handleNumberInput} />
+					<Button id="nine" value="9" cls="number" click={this.handleNumberInput} />
+					<Button id="multiply" value="×" cls="operator" click={this.handleOperatorInput} />
 
-				<Button id="one" value="1" cls="number" click={this.handleNumberInput} />
-				<Button id="two" value="2" cls="number" click={this.handleNumberInput} />
-				<Button id="three" value="3" cls="number" click={this.handleNumberInput} />
-				<Button id="add" value="+" cls="operator" click={this.handleOperatorInput} />
+					<Button id="four" value="4" cls="number" click={this.handleNumberInput} />
+					<Button id="five" value="5" cls="number" click={this.handleNumberInput} />
+					<Button id="six" value="6" cls="number" click={this.handleNumberInput} />
+					<Button id="subtract" value="−" cls="operator" click={this.handleOperatorInput} />
 
-				<Button id="zero" value="0" cls="number" click={this.handleNumberInput} />
-				<Button id="decimal" value="." cls="number" click={this.handleDecimalInput} />
-				<Button id="equal" value="=" cls="operator" click={this.handleCalculation} />
+					<Button id="one" value="1" cls="number" click={this.handleNumberInput} />
+					<Button id="two" value="2" cls="number" click={this.handleNumberInput} />
+					<Button id="three" value="3" cls="number" click={this.handleNumberInput} />
+					<Button id="add" value="+" cls="operator" click={this.handleOperatorInput} />
+
+					<Button id="zero" value="0" cls="number" click={this.handleNumberInput} />
+					<Button id="decimal" value="." cls="number" click={this.handleDecimalInput} />
+					<Button id="equal" value="=" cls="operator" click={this.handleCalculation} />
+				</main>
+
+				<History list={history.list} state={history.state} toggle={this.toggleHistory} clear={this.clearHistory} />
 			</div>
 		);
 	}

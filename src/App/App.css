@@ -24,6 +24,7 @@ body {
 	font-size: 16px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background-color: var(--color-bg--secondary);
 }
 
 *,
@@ -42,8 +43,7 @@ button {
 	  outline-color: var(--color-text--primary);
 }
 
-.layout-container {
-	background-color: var(--color-bg--secondary);
+.layout-center {
 	height: 100%;
 	display: grid;
 	place-items: center;
@@ -52,4 +52,5 @@ button {
 @import "../Components/Calculator/Calculator.css";
 @import "../Components/Button/Button.css";
 @import "../Components/Display/Display.css";
+@import "../Components/History/History.css";
   
