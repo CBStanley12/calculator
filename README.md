@@ -37,10 +37,10 @@
 - [X] Allow user to clear current input *[C]* or clear current input and equation *[AC]*; Available option depends on current state
 - [X] Functioning sign key *[±]* can be used to change the sign of the current input from positive to negative or vice versa
 - [X] Functioning percent key *[%]* can be used to perfrom percentage calculations ***(Note: This key functions as explained in [this Microsoft article by Raymond Chen circa 2008](https://devblogs.microsoft.com/oldnewthing/20080110-00/?p=23853))***
+- [X] Implement history component, that can be toggled, to display previous calculations and allow user to clear history
 
 ### To-Do:
 - [ ] Limit length of user input to avoid display overflow
-- [ ] Implement history component, that can be toggled, to display previous calculations and allow user to clear history
 - [ ] Option for user to toggle between themes such as light and dark mode
 
 ## Demonstrations
