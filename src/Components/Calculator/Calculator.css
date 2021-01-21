@@ -1,5 +1,7 @@
 .layout-container {
 	display: flex;
+	height: auto;
+	width: auto;
 }
 
 .calculator {
@@ -21,12 +23,20 @@
 }
 
 @media only screen and (max-width: 1024px) {
+	.layout-container {
+		height: 100%;
+		width: 100%;
+	}
+
 	.calculator {
-		background-color: var(--color-bg--primary);
 		height: 100%;
 		width: 100%;
 		border-radius: 0;
 		padding: 4rem 0.7rem 1.4rem 0.7rem;
 		grid-gap: 0.8rem 0.4rem;
+	}
+
+	.calculator[data-history="is-active"] {
+		display: none;
 	}
 }

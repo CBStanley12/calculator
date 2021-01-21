@@ -36,7 +36,7 @@
 }
 
 .btn--clear {
-	background-color: #FF5722;
+	background-color: #E64A19;
 }
 
 aside .btn--history {
@@ -44,7 +44,8 @@ aside .btn--history {
 }
 
 @media only screen and (max-width: 1024px) {
-	.btn--history {
+	.btn--history,
+	.btn--clear {
 		font-size: 2.4vw;
 		top: 0.7rem;
 		right: 0.7rem;
@@ -56,7 +57,8 @@ aside .btn--history {
 		font-size: 9vw;
 	}
 
-	.btn--history {
+	.btn--history,
+	.btn--clear {
 		font-size: 4vw;
 		top: 1rem;
 		right: 0.7rem;
