@@ -35,6 +35,8 @@ class Calculator extends Component {
 		this.convertToNumber = this.convertToNumber.bind(this);
 		this.toggleHistory = this.toggleHistory.bind(this);
 		this.clearHistory = this.clearHistory.bind(this);
+		this.saveHistoryToStorage = this.saveHistoryToStorage.bind(this);
+		this.getStoredHistory = this.getStoredHistory.bind(this);
 	}
 
 	handleNumberInput(e) {
@@ -133,6 +135,7 @@ class Calculator extends Component {
 			equation: equation,
 			history: history
 		});
+		this.saveHistoryToStorage();
 	}
 
 	clear() {
@@ -176,6 +179,20 @@ class Calculator extends Component {
 		let history = this.state.history;
 		history.list = [];
 		this.setState({ history: history });
+		this.saveHistoryToStorage();
+	}
+
+	saveHistoryToStorage() {
+		localStorage.setItem("calculatorHistory", JSON.stringify(this.state.history));
+	}
+
+	getStoredHistory() {
+		let history = JSON.parse(localStorage.calculatorHistory);
+		this.setState({ history: history });
+	}
+
+	componentDidMount() {
+		if (localStorage.calculatorHistory) this.getStoredHistory();
 	}
 
 	render() {
