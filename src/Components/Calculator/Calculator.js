@@ -205,7 +205,7 @@ class Calculator extends Component {
 				<main className="calculator" data-history={`is-${history.state}`}>
 					{(history.state === 'active') ? "" : <Button id="toggle" value="view history" cls="history" click={this.toggleHistory} />}
 
-					<Display equation={equation.display} value={(term.display.includes('%')) ? term.value.toLocaleString('en') : term.display} />
+					<Display equation={equation.display.join(' ')} value={(term.display.includes('%')) ? term.value.toLocaleString('en') : term.display} />
 
 					{(term.display !== '0' && !equation.display.includes('=')) ? btnClear : btnClearAll}
 					<Button id="sign" value="±" cls="modifier" click={this.handleSignInput} />

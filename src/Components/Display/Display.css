@@ -1,3 +1,8 @@
+:root {
+	--fs-equation: 28px;
+	--fs-value: 80px;
+}
+
 .display {
     grid-area: 1 / 1 / 2 / 5;
     background-color: var(--color-bg--tertiary);
@@ -6,35 +11,31 @@
 	display: grid;
 	grid-template: 30% 70% / 100%;
 	place-items: center end;
+	padding: 0 1rem;
+	overflow: hidden;
 }
 
 .display_equation, .display_value {
 	margin: 0;
-	padding: 0 1rem;
+	padding: 0;
+	text-align: right;
+	transition: font-size 0.1s ease-out;
 }
 
 .display_equation {
 	color: var(--color-text--tertiary);
-	font-size: 1.7rem;
+	font-size: var(--fs-equation);
 	font-weight: 700;
 }
 
 .display_value {
 	color: var(--color-text--secondary);
-	font-size: 5rem;
+	font-size: var(--fs-value);
 	font-weight: 400;
 }
 
 @media only screen and (max-width: 600px) {
-	.display_equation, .display_value {
-		padding: 0.3rem;
-	}
-
-	.display_equation {
-		font-size: 5vw;
-	}
-
-	.display_value {
-		font-size: 14vw;
+	.display {
+		padding: 0 0.3rem;
 	}
 }
