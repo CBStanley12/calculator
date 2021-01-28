@@ -183,11 +183,12 @@ class Calculator extends Component {
 	}
 
 	saveHistoryToStorage() {
-		localStorage.setItem("calculatorHistory", JSON.stringify(this.state.history));
+		localStorage.setItem("calculatorHistory", JSON.stringify(this.state.history.list));
 	}
 
 	getStoredHistory() {
-		let history = JSON.parse(localStorage.calculatorHistory);
+		let history = this.state.history;
+		history.list = JSON.parse(localStorage.calculatorHistory);
 		this.setState({ history: history });
 	}
 
